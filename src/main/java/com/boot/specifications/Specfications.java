@@ -52,7 +52,7 @@ public class Specfications {
                 continue;
             }
             if (a == ' ') {
-            	if (curr.length() <= 1 || seen.contains(curr)) {
+            	if (curr.length() <= 1 || seen.contains(curr) || curr.length() >= 10) {
             		return false;
             	}
             	seen.add(curr);
