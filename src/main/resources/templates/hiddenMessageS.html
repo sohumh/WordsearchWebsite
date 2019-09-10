@@ -51,10 +51,10 @@
         </div>
       </div>
         
-        <form action="#" th:action="@{/hiddenMessage}" th:object="${message}" method="post">
+        <form action="#" th:action="@{/hiddenMessageS}" th:object="${message}" method="post">
        			  <h4 style="text-align:center">Enter Hidden Message</h4>
        			  <p class="text-muted" style="text-align:center">By the specifications given, to create an enjoyable, diverse wordsearch, 
-       			  the hidden message must be of at least length <span th:text="${length}"></span>. Enter only characters (ignore spaces). Maximum length (by grid size): <span th:text="${limit}"></span>.</p>		          
+       			  the hidden message must be of at least length <span th:text="${length}"></span>. Enter only characters (ignore spaces).</p>		          
 		          <div class="timeline-body" style="text-align:center">
     				<textarea class="form-control" id="exampleFormControlTextarea1" rows="5" th:field="*{message}"></textarea>
     				<br>

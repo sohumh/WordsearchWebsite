@@ -35,7 +35,7 @@ public class Specfications {
 			model.addAttribute("length", spec.minLength);
 			model.addAttribute("message", new Message());
 			Storage.spec = spec;
-			return "hiddenMessage";
+			return "hiddenMessageS";
 		}
 		return "enteredPageE";
     }
@@ -63,7 +63,7 @@ public class Specfications {
             curr += a;
 
         }
-        return c > 3 && curr.length() > 1 && !seen.contains(curr);
+        return c > 3 && curr.length() != 1 && !seen.contains(curr);
 	}
 
 	@GetMapping("/randomPage")
@@ -81,6 +81,7 @@ public class Specfications {
 		Storage.spec = spec;
 		model.addAttribute("message", new Message());
 		model.addAttribute("length", spec.minLength);
+		model.addAttribute("limit", spec.width * spec.height - 10);
         return "hiddenMessage";
     }
 
@@ -106,6 +107,7 @@ public class Specfications {
 		model.addAttribute("message", new Message());
 		spec.setMinLength(assignMinimumLength(spec));
 		model.addAttribute("length", spec.minLength);
+		model.addAttribute("limit", spec.width * spec.height - 10);
         return "hiddenMessage";
     }
 	
@@ -162,10 +164,29 @@ public class Specfications {
 	
 	@PostMapping("/hiddenMessage")
     public String hiddenMessageSubmit(Message m, Model model) {
+		if (Storage.spec.getMinLength() > m.getMessage().length() || Storage.spec.width * Storage.spec.height - 10 < m.getMessage().length()) {
+			model.addAttribute("message", new Message());
+			model.addAttribute("length", Storage.spec.minLength);
+			model.addAttribute("limit", Storage.spec.width * Storage.spec.height - 10);
+			return "hiddenMessageE";
+		}
+		Wordsearch a = generatePuzzle(Storage.spec, m.message);
+		model.addAttribute("puzzle", a.finalAnswer);
+		model.addAttribute("words", makeIntoList(a.seen));
+		model.addAttribute("locs", a.locationsPlaced);
+		model.addAttribute("title", Storage.spec.title);
+		if (Math.max(Storage.spec.height, Storage.spec.width) > 10) {
+			return "cleanAnswerB";
+		}
+        return "cleanAnswer";
+    }
+	
+	@PostMapping("/hiddenMessageS")
+    public String hiddenMessageSpecSubmit(Message m, Model model) {
 		if (Storage.spec.getMinLength() > m.getMessage().length()) {
 			model.addAttribute("message", new Message());
 			model.addAttribute("length", Storage.spec.minLength);
-			return "hiddenMessageE";
+			return "hiddenMessageSE";
 		}
 		Wordsearch a = generatePuzzle(Storage.spec, m.message);
 		model.addAttribute("puzzle", a.finalAnswer);
